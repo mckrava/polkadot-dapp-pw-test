@@ -3,23 +3,13 @@ import {
   MatchImageSnapshotOptions,
   toMatchImageSnapshot,
 } from 'jest-image-snapshot'
-import manifest from '../polkadot-dapp/extension/master-build/manifest.json'
 import {
-  TAB_QUERY,
-  URLS,
-  isExtensionURL,
   CLOSE_PAGES,
   initBrowserWithExtension,
-  openPages,
 } from './utils'
 
 expect.extend({ toMatchImageSnapshot })
 
-const matchImageSnapshotOptions: MatchImageSnapshotOptions = {
-  updatePassedSnapshot: true,
-  failureThreshold: 0.2,
-  failureThresholdType: 'percent',
-}
 
 const aliceAccount = 'bXmPf7DcVmFuHEmzH3UX8t6AUkfNQW8pnTeXGhFhqbfngjAak';
 const testAccount = 'bXn2PvP753f2YAKacPbAJo9WazQuHT5dsaNPciyQFUaEfqbpe';
@@ -30,16 +20,6 @@ const testAccountSeed = 'category city hire ramp explain duty garment mask draw 
 let page: Page
 let browserContext: ChromiumBrowserContext
 let extensionURL: string
-
-const getCenterOfRect = (rect: {
-  top: number
-  bottom: number
-  left: number
-  right: number
-}) => {
-  const { top, bottom, left, right } = rect
-  return [(left + right) / 2, (top + bottom) / 2]
-}
 
 const initPolkadotDapp = async () => {
   const init = await initBrowserWithExtension()
