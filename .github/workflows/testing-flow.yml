@@ -17,6 +17,46 @@ jobs:
 
       - name: Configure Rust Env
         run: curl https://getsubstrate.io -sSf | bash -s -- --fast
+
+      - name: Prepare folders structure
+        run: |
+#          mkdir Basilisk-node
+#          mkdir polkadot
+          mkdir ui-app
+
+      - name: Clone Basilisk-node
+        run: |
+#          cd Basilisk-node
+          git clone https://github.com/galacticcouncil/Basilisk-node.git
+          cd Basilisk-node
+          mkdir target
+          cd target
+          mkdir release
+          cd release
+          pwd
+          wget https://github.com/galacticcouncil/Basilisk-node/releases/download/v5.0.3/basilisk
+          ls
+          cd ..
+          cd ..
+          cd ..
+          pwd
+
+
+      - name: Clone Basilisk-node
+        run: |
+          git clone https://github.com/galacticcouncil/Basilisk-node.git
+          cd polkadot
+          mkdir target
+          cd target
+          mkdir release
+          cd release
+          pwd
+          wget https://github.com/paritytech/polkadot/releases/download/v0.9.12/polkadot
+          ls
+          cd ..
+          cd ..
+          cd ..
+          pwd
 #
 #      - uses: actions/checkout@v2
 #
