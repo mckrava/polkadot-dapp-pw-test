@@ -1,0 +1,59 @@
+name: Testing Flow
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+# GH_PAGES_FULL_BRANCH - app-builds-gh-pages
+
+jobs:
+  test:
+    name: Testing
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Configure Rust Env
+        run: curl https://getsubstrate.io -sSf | bash -s -- --fast
+#
+#      - uses: actions/checkout@v2
+#
+#      - name: Install Node.js
+#        uses: actions/setup-node@v1
+#        with:
+#          node-version: 14.x
+#
+#      - name: Install NPM packages
+#        run: |
+#          npm install
+#          npm ci
+#
+#      - name: Update browserslist
+#        run: npx browserslist@latest --update-db
+#
+#      - name: Build App and Storybook
+#        run: |
+#          npm run build
+#          npm run build-storybook -- -o sb-build-files
+#        env:
+#          CI: false
+#
+#      - name: Upload script files
+#        uses: actions/upload-artifact@v2
+#        with:
+#          name: script-files
+#          path: ./scripts
+#
+#      - name: Upload production-ready SB build files
+#        uses: actions/upload-artifact@v2
+#        with:
+#          name: sb-build-files
+#          path: ./sb-build-files
+#
+#      - name: Upload production-ready App build files
+#        uses: actions/upload-artifact@v2
+#        with:
+#          name: app-build-files
+#          path: ./build
