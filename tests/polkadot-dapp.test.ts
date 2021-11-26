@@ -26,6 +26,8 @@ const initPolkadotDapp = async () => {
   browserContext = init.browserContext
   extensionURL = init.extensionURL
   page = browserContext.pages()[0]
+  // const newSession = await browserContext.newCDPSession(page);
+  // newSession.tracing.start({ screenshots: true, snapshots: true });
 
   await page.goto(extensionURL);
   await page.bringToFront()
@@ -43,29 +45,29 @@ const initPolkadotDapp = async () => {
 }
 
 describe('The Extension page should', async () => {
-  beforeAll(async () => {
-    const init = await initBrowserWithExtension()
-    browserContext = init.browserContext
-    extensionURL = init.extensionURL
-    page = browserContext.pages()[0]
-  })
-
-  afterAll(async () => {
-    await browserContext?.close()
-    browserContext = null
-    page = null
-    extensionURL = ''
-  })
-
-  beforeEach(async () => {
-    if (!extensionURL) {
-      console.error('Invalid extensionURL', { extensionURL })
-    }
-    await page.bringToFront()
-    await page.goto(extensionURL)
-    await page.waitForTimeout(1000)
-    await CLOSE_PAGES(browserContext)
-  })
+  // beforeAll(async () => {
+  //   const init = await initBrowserWithExtension()
+  //   browserContext = init.browserContext
+  //   extensionURL = init.extensionURL
+  //   page = browserContext.pages()[0]
+  // })
+  //
+  // afterAll(async () => {
+  //   await browserContext?.close()
+  //   browserContext = null
+  //   page = null
+  //   extensionURL = ''
+  // })
+  //
+  // beforeEach(async () => {
+  //   if (!extensionURL) {
+  //     console.error('Invalid extensionURL', { extensionURL })
+  //   }
+  //   await page.bringToFront()
+  //   await page.goto(extensionURL)
+  //   await page.waitForTimeout(1000)
+  //   await CLOSE_PAGES(browserContext)
+  // })
 
   await initPolkadotDapp();
   await page.waitForTimeout(2000);
@@ -91,5 +93,5 @@ describe('The Extension page should', async () => {
     await confPage.fill('//body/descendant-or-self::input[@type="password"]', testAccountPass);
     await confPage.click('//body/descendant-or-self::div[(text()="Sign the transaction")]/..');
   })
-
+  // await browserContext.tracing.stop({ path: 'trace.zip' });
 })
