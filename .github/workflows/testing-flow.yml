@@ -20,98 +20,68 @@ jobs:
 
       - name: Prepare folders structure
         run: mkdir ui-app
+#
+#      - name: Clone polkadot-launch
+#        run: |
+#          git clone https://github.com/paritytech/polkadot-launch.git
+#          cd polkadot-launch
+#          yarn
+#          yarn build
+#          chmod +x dist/index.js
+#          npm link
+#
+#      - name: Clone Basilisk-node
+#        run: |
+#          git clone https://github.com/galacticcouncil/Basilisk-node.git
+#          cd Basilisk-node
+#          mkdir target
+#          cd target
+#          mkdir release
+#          cd release
+#          pwd
+#          wget https://github.com/galacticcouncil/Basilisk-node/releases/download/v5.0.3/basilisk
+#          ls
+#          cd ..
+#          cd ..
+#          cd ..
+#          pwd
+#
+#
+#      - name: Clone Basilisk-node
+#        run: |
+#          git clone https://github.com/paritytech/polkadot.git
+#          cd polkadot
+#          mkdir target
+#          cd target
+#          mkdir release
+#          cd release
+#          pwd
+#          wget https://github.com/paritytech/polkadot/releases/download/v0.9.12/polkadot
+#          ls
+#          cd ..
+#          cd ..
+#          cd ..
+#          pwd
+#
+#      - name: Clone Basilisk-api
+#        run: |
+#          git clone -b feature/historical-pool-liquidity https://github.com/galacticcouncil/Basilisk-api.git
+#          ls
+#          cd Basilisk-api
+#          yarn
+#
+#      - name: Run testnet
+#        run: |
+#          cd Basilisk-api
+#          yarn testnet:start
 
-      - name: Clone polkadot-launch
-        run: |
-          git clone https://github.com/paritytech/polkadot-launch.git
-          cd polkadot-launch
-          yarn
-          yarn build
-          chmod +x dist/index.js
-          npm link
-
-      - name: Clone Basilisk-node
-        run: |
-          git clone https://github.com/galacticcouncil/Basilisk-node.git
-          cd Basilisk-node
-          mkdir target
-          cd target
-          mkdir release
-          cd release
-          pwd
-          wget https://github.com/galacticcouncil/Basilisk-node/releases/download/v5.0.3/basilisk
-          ls
-          cd ..
-          cd ..
-          cd ..
-          pwd
-
-
-      - name: Clone Basilisk-node
-        run: |
-          git clone https://github.com/paritytech/polkadot.git
-          cd polkadot
-          mkdir target
-          cd target
-          mkdir release
-          cd release
-          pwd
-          wget https://github.com/paritytech/polkadot/releases/download/v0.9.12/polkadot
-          ls
-          cd ..
-          cd ..
-          cd ..
-          pwd
-
-      - name: Clone Basilisk-api
-        run: |
-          git clone -b feature/historical-pool-liquidity https://github.com/galacticcouncil/Basilisk-api.git
-          ls
-          cd Basilisk-api
-          yarn
+      - uses: actions/checkout@v2
+        with:
+          path: 'ui-app'
 
       - name: Run testnet
         run: |
-          cd Basilisk-api
-          yarn testnet:start
-
-#
-#      - uses: actions/checkout@v2
-#
-#      - name: Install Node.js
-#        uses: actions/setup-node@v1
-#        with:
-#          node-version: 14.x
-#
-#      - name: Install NPM packages
-#        run: |
-#          npm install
-#          npm ci
-#
-#      - name: Update browserslist
-#        run: npx browserslist@latest --update-db
-#
-#      - name: Build App and Storybook
-#        run: |
-#          npm run build
-#          npm run build-storybook -- -o sb-build-files
-#        env:
-#          CI: false
-#
-#      - name: Upload script files
-#        uses: actions/upload-artifact@v2
-#        with:
-#          name: script-files
-#          path: ./scripts
-#
-#      - name: Upload production-ready SB build files
-#        uses: actions/upload-artifact@v2
-#        with:
-#          name: sb-build-files
-#          path: ./sb-build-files
-#
-#      - name: Upload production-ready App build files
-#        uses: actions/upload-artifact@v2
-#        with:
-#          name: app-build-files
-#          path: ./build
+          ls
+          pwd
+          cd ui-app
+          ls
