@@ -40,7 +40,7 @@ jobs:
 
       - name: Clone Basilisk-node
         run: |
-          git clone https://github.com/galacticcouncil/Basilisk-node.git
+          git clone https://github.com/paritytech/polkadot.git
           cd polkadot
           mkdir target
           cd target
@@ -53,7 +53,18 @@ jobs:
           cd ..
           cd ..
           pwd
+
+      - name: Clone Basilisk-api
+        run: |
+          git clone -b feature/historical-pool-liquidity https://github.com/galacticcouncil/Basilisk-api.git
           ls
+          cd Basilisk-api
+          yarn
+          
+      - name: Run testnet
+        run: |
+          yarn testnet:start
+
 #
 #      - uses: actions/checkout@v2
 #
