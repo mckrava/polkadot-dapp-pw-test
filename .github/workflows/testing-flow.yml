@@ -21,6 +21,15 @@ jobs:
       - name: Prepare folders structure
         run: mkdir ui-app
 
+      - name: Clone polkadot-launch
+        run: |
+          git clone https://github.com/paritytech/polkadot-launch.git
+          cd polkadot-launch
+          yarn
+          yarn build
+          chmod +x dist/index.js
+          npm link
+
       - name: Clone Basilisk-node
         run: |
           git clone https://github.com/galacticcouncil/Basilisk-node.git
