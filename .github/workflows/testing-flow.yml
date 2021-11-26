@@ -60,9 +60,10 @@ jobs:
           ls
           cd Basilisk-api
           yarn
-          
+
       - name: Run testnet
         run: |
+          cd Basilisk-api
           yarn testnet:start
 
 #
