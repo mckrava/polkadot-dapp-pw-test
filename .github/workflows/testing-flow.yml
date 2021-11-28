@@ -21,66 +21,59 @@ jobs:
       - name: Prepare folders structure
         run: mkdir ui-app
 
-      - name: Clone polkadot-launch
-        run: |
-          git clone https://github.com/paritytech/polkadot-launch.git
-          cd polkadot-launch
-          yarn
-          yarn build
-          chmod +x dist/index.js
-          npm link
-
-      - name: Clone Basilisk-node
-        run: |
-          git clone https://github.com/galacticcouncil/Basilisk-node.git
-          cd Basilisk-node
-          mkdir target
-          cd target
-          mkdir release
-          cd release
-          pwd
-          wget https://github.com/galacticcouncil/Basilisk-node/releases/download/v5.0.3/basilisk
-          ls
-          cd ..
-          cd ..
-          cd ..
-          pwd
-
-
-      - name: Clone Basilisk-node
-        run: |
-          git clone https://github.com/paritytech/polkadot.git
-          cd polkadot
-          mkdir target
-          cd target
-          mkdir release
-          cd release
-          pwd
-          wget https://github.com/paritytech/polkadot/releases/download/v0.9.12/polkadot
-          ls
-          cd ..
-          cd ..
-          cd ..
-          pwd
-
-      - name: Clone Basilisk-api
-        run: |
-          git clone -b feature/historical-pool-liquidity https://github.com/galacticcouncil/Basilisk-api.git
-          ls
-          cd Basilisk-api
-          yarn
-
-      - name: Run testnet
-        run: |
-          cd Basilisk-api
-          yarn testnet:start
-
-      - name: Run testnet
-        run: |
-          ls
-          pwd
-          cd ui-app
-          ls
+#      - name: Clone polkadot-launch
+#        run: |
+#          git clone https://github.com/paritytech/polkadot-launch.git
+#          cd polkadot-launch
+#          yarn
+#          yarn build
+#          chmod +x dist/index.js
+#          npm link
+#
+#      - name: Clone Basilisk-node
+#        run: |
+#          git clone https://github.com/galacticcouncil/Basilisk-node.git
+#          cd Basilisk-node
+#          mkdir target
+#          cd target
+#          mkdir release
+#          cd release
+#          pwd
+#          wget https://github.com/galacticcouncil/Basilisk-node/releases/download/v5.0.3/basilisk
+#          ls
+#          cd ..
+#          cd ..
+#          cd ..
+#          pwd
+#
+#
+#      - name: Clone Basilisk-node
+#        run: |
+#          git clone https://github.com/paritytech/polkadot.git
+#          cd polkadot
+#          mkdir target
+#          cd target
+#          mkdir release
+#          cd release
+#          pwd
+#          wget https://github.com/paritytech/polkadot/releases/download/v0.9.12/polkadot
+#          ls
+#          cd ..
+#          cd ..
+#          cd ..
+#          pwd
+#
+#      - name: Clone Basilisk-api
+#        run: |
+#          git clone -b feature/historical-pool-liquidity https://github.com/galacticcouncil/Basilisk-api.git
+#          ls
+#          cd Basilisk-api
+#          yarn
+#
+#      - name: Run testnet
+#        run: |
+#          cd Basilisk-api
+#          yarn testnet:start
 
       - uses: actions/setup-node@v2
         with:
@@ -97,6 +90,13 @@ jobs:
         run: |
           cd ui-app
           yarn
-          DEBUG=pw:browser* HEADFUL=true xvfb-run --auto-servernum -- npm test
+          DEBUG=pw:browser* HEADFUL=true xvfb-run --auto-servernum -- npm test polkadot-dapp.test.ts
         env:
           PLAYWRIGHT_TEST_BASE_URL: ${{ github.event.deployment_status.target_url }}
+
+      - name: Upload trace files
+        uses: actions/upload-artifact@v2
+        with:
+          name: trace_screenshots
+          path: ./ui-app/trace.zip
+
