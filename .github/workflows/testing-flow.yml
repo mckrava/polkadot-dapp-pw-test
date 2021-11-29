@@ -101,12 +101,14 @@ jobs:
           PLAYWRIGHT_TEST_BASE_URL: ${{ github.event.deployment_status.target_url }}
 
       - name: Upload trace files
+        if: always()
         uses: actions/upload-artifact@v2
         with:
           name: trace_screenshots
           path: ./ui-app/trace.zip
 
       - name: Stop testnet
+        if: always()
         shell: bash
         run: |
           cd Basilisk-api
