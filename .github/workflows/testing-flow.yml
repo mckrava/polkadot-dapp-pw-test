@@ -38,13 +38,11 @@ jobs:
           cd target
           mkdir release
           cd release
-          pwd
           wget https://github.com/galacticcouncil/Basilisk-node/releases/download/v5.0.3/basilisk
-          ls
+          chmod +x basilisk
           cd ..
           cd ..
           cd ..
-          pwd
 
 
       - name: Clone Polkadot-node
@@ -55,18 +53,15 @@ jobs:
           cd target
           mkdir release
           cd release
-          pwd
           wget https://github.com/paritytech/polkadot/releases/download/v0.9.12/polkadot
-          ls
+          chmode +x polkadot
           cd ..
           cd ..
           cd ..
-          pwd
 
       - name: Clone Basilisk-api
         run: |
           git clone -b feature/historical-pool-liquidity https://github.com/galacticcouncil/Basilisk-api.git
-          ls
           cd Basilisk-api
           yarn
 
@@ -111,8 +106,10 @@ jobs:
         if: always()
         shell: bash
         run: |
-          cd Basilisk-api
-          yarn testnet:stop
+          pkill polkadot
+          pkill basilisk
+# cd Basilisk-api
+# yarn testnet:stop
 
       - name: Sleep for 10 seconds
         run: sleep 10
