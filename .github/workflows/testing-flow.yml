@@ -54,7 +54,7 @@ jobs:
           mkdir release
           cd release
           wget https://github.com/paritytech/polkadot/releases/download/v0.9.12/polkadot
-          chmode +x polkadot
+          chmod +x polkadot
           cd ..
           cd ..
           cd ..
