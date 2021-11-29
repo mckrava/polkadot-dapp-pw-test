@@ -98,10 +98,10 @@ describe('The Extension page should', () => {
   // });
 
   it('Open Polkadot UI', async () => {
-    // await page.goto('https://polkadot.js.org/apps/?rpc=ws%3A%2F%2F127.0.0.1%3A9988#/accounts');
-    await page.goto(
-      'https://polkadot.js.org/apps/?rpc=wss%3A%2F%2Fbasilisk.api.onfinality.io%2Fpublic-ws#/accounts'
-    );
+    await page.goto('https://polkadot.js.org/apps/?rpc=ws%3A%2F%2F127.0.0.1%3A9988#/accounts');
+    // await page.goto(
+    //   'https://polkadot.js.org/apps/?rpc=wss%3A%2F%2Fbasilisk.api.onfinality.io%2Fpublic-ws#/accounts'
+    // );
 
     browserContext.on('page', async confPage => {
       await confPage.waitForLoadState();
