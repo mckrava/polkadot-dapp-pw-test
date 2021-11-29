@@ -14,15 +14,12 @@ jobs:
     name: Testing
     runs-on: ubuntu-latest
     steps:
-
       - name: Configure Rust Env
         run: curl https://getsubstrate.io -sSf | bash -s -- --fast
 
       - name: Prepare folders structure
         run: |
           mkdir ui-app
-          mkdir Basilisk-node
-          mkdir polkadot
 
       - name: Clone polkadot-launch
         run: |
@@ -33,8 +30,9 @@ jobs:
           chmod +x dist/index.js
           npm link
 
-      - name: Fetch Basilisk-node binary
+      - name: Clone Basilisk-node
         run: |
+          git clone https://github.com/galacticcouncil/Basilisk-node.git
           cd Basilisk-node
           mkdir target
           cd target
@@ -43,8 +41,9 @@ jobs:
           wget https://github.com/galacticcouncil/Basilisk-node/releases/download/v5.0.3/basilisk
           chmod +x basilisk
 
-      - name: Fetch Polkadot-node binary
+      - name: Clone Polkadot-node
         run: |
+          git clone https://github.com/paritytech/polkadot.git
           cd polkadot
           mkdir target
           cd target
@@ -68,7 +67,6 @@ jobs:
       - name: Sleep for 20 seconds
         run: sleep 20s
         shell: bash
-
 
       - uses: actions/setup-node@v2
         with:
@@ -102,10 +100,9 @@ jobs:
         run: |
           pkill polkadot
           pkill basilisk
-# cd Basilisk-api
-# yarn testnet:stop
+      # cd Basilisk-api
+      # yarn testnet:stop
 
       - name: Sleep for 10 seconds
         run: sleep 10
         shell: bash
-
