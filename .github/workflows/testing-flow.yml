@@ -57,7 +57,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: Basilisk-node/target/release
-          key: bin-basilisk-node-2-${{ hashFiles('Basilisk-node/Cargo.lock') }}
+          key: bin-basilisk-node-3-${{ hashFiles('Basilisk-node/Cargo.lock') }}
 
       - name: Fetch Basilisk-node bin file
         if: steps.cache-bin-basilisk-node.outputs.cache-hit != 'true'
@@ -85,7 +85,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: polkadot/target/release
-          key: bin-polkadot-node-2-${{ hashFiles('polkadot/Cargo.lock') }}
+          key: bin-polkadot-node-3-${{ hashFiles('polkadot/Cargo.lock') }}
 
       - name: Fetch Polkadot-node bin file
         if: steps.cache-bin-polkadot-node.outputs.cache-hit != 'true'
@@ -95,7 +95,7 @@ jobs:
           cd target
           mkdir -p release
           cd release
-          wget https://github.com/paritytech/polkadot/releases/download/v0.9.12/polkadot
+          wget https://github.com/paritytech/polkadot/releases/download/v0.9.13/polkadot
 
       - name: Make Polkadot-node bin executanle
         run: |
@@ -214,9 +214,6 @@ jobs:
           name: ui-app-artifacts
           path: ./ui-app
 
-      - name: Test structure
-        run: ls
-
 # Prepare Basilisk-api
 
       - name: Clone Basilisk-api
@@ -249,6 +246,17 @@ jobs:
         run: |
           cd ui-app
           yarn
+
+      - name: Test structure
+        run: ls
+
+      - name: Change folders permissions
+        run: |
+          chmod -R a+rwX polkadot
+          chmod -R a+rwX Basilisk-node
+          chmod -R a+rwX Basilisk-api
+          chmod -R a+rwX polkadot-launch
+          chmod -R a+rwX ui-app
 
 
       - name: Configure Rust Env
