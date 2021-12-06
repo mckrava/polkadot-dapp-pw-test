@@ -300,9 +300,9 @@ jobs:
         if: always()
         shell: bash
         run: |
-          killall -q polkadot
-          killall -q basilisk
-          killall -q testing-basilisk
+          killall -q -v polkadot
+#          killall -q -v basilisk
+          killall -q -v testing-basilisk
       # cd Basilisk-api
       # yarn testnet:stop
 
