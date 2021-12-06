@@ -57,7 +57,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: Basilisk-node/target/release
-          key: bin-basilisk-node-3-${{ hashFiles('Basilisk-node/Cargo.lock') }}
+          key: bin-basilisk-node-4-${{ hashFiles('Basilisk-node/Cargo.lock') }}
 
       - name: Fetch Basilisk-node bin file
         if: steps.cache-bin-basilisk-node.outputs.cache-hit != 'true'
@@ -68,11 +68,13 @@ jobs:
           mkdir -p release
           cd release
           wget https://github.com/galacticcouncil/Basilisk-node/releases/download/v6.0.0/basilisk
+          cp basilisk testing-basilisk
 
       - name: Make Basilisk-node bin executanle
         run: |
           cd Basilisk-node/target/release
           chmod +x basilisk
+          chmod +x testing-basilisk
 
 # Prepare Polkadot-node
 
