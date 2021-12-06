@@ -67,7 +67,7 @@ jobs:
           cd target
           mkdir -p release
           cd release
-          wget https://github.com/galacticcouncil/Basilisk-node/releases/download/v5.0.3/basilisk
+          wget https://github.com/galacticcouncil/Basilisk-node/releases/download/v6.0.0/basilisk
 
       - name: Make Basilisk-node bin executanle
         run: |
@@ -95,7 +95,7 @@ jobs:
           cd target
           mkdir -p release
           cd release
-          wget https://github.com/paritytech/polkadot/releases/download/v0.9.12/polkadot
+          wget https://github.com/paritytech/polkadot/releases/download/v0.9.13/polkadot
 
       - name: Make Polkadot-node bin executanle
         run: |
