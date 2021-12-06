@@ -50,19 +50,19 @@ jobs:
 
       - name: Clone Basilisk-node
         run: |
-          git clone https://github.com/galacticcouncil/Basilisk-node.git
+          git clone https://github.com/galacticcouncil/Basilisk-node.git basilisk-node
 
       - name: Cache binary file for Basilisk-node
         id: cache-bin-basilisk-node
         uses: actions/cache@v2
         with:
-          path: Basilisk-node/target/release
-          key: bin-basilisk-node-5-${{ hashFiles('Basilisk-node/Cargo.lock') }}
+          path: basilisk-node/target/release
+          key: bin-basilisk-node-5-${{ hashFiles('basilisk-node/Cargo.lock') }}
 
       - name: Fetch Basilisk-node bin file
         if: steps.cache-bin-basilisk-node.outputs.cache-hit != 'true'
         run: |
-          cd Basilisk-node
+          cd basilisk-node
           mkdir -p target
           cd target
           mkdir -p release
@@ -73,7 +73,7 @@ jobs:
 
       - name: Make Basilisk-node bin executanle
         run: |
-          cd Basilisk-node/target/release
+          cd basilisk-node/target/release
           chmod +x basilisk
           chmod +x testing-basilisk
 
@@ -129,7 +129,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: basilisk-node-artifacts
-          path: ./Basilisk-node
+          path: ./basilisk-node
 
       - name: Save artifacts - Polkadot-node
         uses: actions/upload-artifact@v2
@@ -191,7 +191,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: basilisk-node-artifacts
-          path: ./Basilisk-node
+          path: ./basilisk-node
 
       - name: Download artifact - Polkadot-node
         uses: actions/download-artifact@v2
@@ -256,7 +256,7 @@ jobs:
       - name: Change folders permissions
         run: |
           chmod -R 777 polkadot
-          chmod -R 777 Basilisk-node
+          chmod -R 777 basilisk-node
           chmod -R 777 Basilisk-api
           chmod -R 777 polkadot-launch
           chmod -R 777 ui-app
