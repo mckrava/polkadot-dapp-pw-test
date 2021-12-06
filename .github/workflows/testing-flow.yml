@@ -126,13 +126,13 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: basilisk-node-artifacts
-          path: ./Basilisk-node
+          path: ./Basilisk-node/target/release
 
       - name: Save artifacts - Polkadot-node
         uses: actions/upload-artifact@v2
         with:
           name: polkadot-node-artifacts
-          path: ./polkadot
+          path: ./polkadot/target/release
 
       - name: Save artifacts - Polkadot-launch
         uses: actions/upload-artifact@v2
@@ -189,13 +189,13 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: basilisk-node-artifacts
-          path: ./Basilisk-node
+          path: ./Basilisk-node/target/release
 
       - name: Download artifact - Polkadot-node
         uses: actions/download-artifact@v2
         with:
           name: polkadot-node-artifacts
-          path: ./polkadot
+          path: ./polkadot/target/release
 
       - name: Download artifact - Polkadot-launch
         uses: actions/download-artifact@v2
