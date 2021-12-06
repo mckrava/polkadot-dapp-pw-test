@@ -10,8 +10,8 @@ on:
 # GH_PAGES_FULL_BRANCH - app-builds-gh-pages
 
 jobs:
-  test:
-    name: Testing 2
+  set_test_env:
+    name: Set test environment
     runs-on: ubuntu-latest
     steps:
 #      - name: Configure Rust Env
@@ -43,6 +43,32 @@ jobs:
           yarn build
           chmod +x dist/index.js
           npm link
+
+      - name: Clone Basilisk-node
+        run: |
+          git clone https://github.com/galacticcouncil/Basilisk-node.git
+
+      - name: Cache binary file for Basilisk-node
+        id: cache-bin-basilisk-node
+        uses: actions/cache@v2
+        with:
+          path: Basilisk-node/target/release
+          key: bin-basilisk-node-${{ hashFiles('Basilisk-node/Cargo.lock') }}
+
+      - name: Fetch Basilisk-node bin file
+        if: steps.cache-bin-basilisk-node.outputs.cache-hit != 'true'
+        run: |
+          cd Basilisk-node
+          mkdir -p target
+          cd target
+          mkdir -p release
+          cd release
+          wget https://github.com/galacticcouncil/Basilisk-node/releases/download/v5.0.3/basilisk
+
+      - name: Make Basilisk-node bin executanle
+        run: |
+          cd Basilisk-node/target/release
+          chmod +x basilisk
 #
 #      - name: Build polkadot-launch
 #        run: |
