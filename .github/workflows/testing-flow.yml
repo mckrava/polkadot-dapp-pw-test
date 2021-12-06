@@ -14,95 +14,119 @@ jobs:
     name: Testing
     runs-on: ubuntu-latest
     steps:
-      - name: Configure Rust Env
-        run: curl https://getsubstrate.io -sSf | bash -s -- --fast
-
-      - name: Prepare folders structure
-        run: |
-          mkdir ui-app
+#      - name: Configure Rust Env
+#        run: curl https://getsubstrate.io -sSf | bash -s -- --fast
+#
+#      - name: Prepare folders structure
+#        run: |
+#          mkdir ui-app
 
       - name: Clone polkadot-launch
+        run: git clone https://github.com/paritytech/polkadot-launch.git
+
+      - name: Cache Node Modules for polkadot-launch
+        id: cache-node-modules-polkadot-launch
+        uses: actions/cache@v2
+        with:
+          path: polkadot-launch/node_modules
+          key: node-modules-polkadot-launch-${{ hashFiles('polkadot-launch/yarn.lock') }}
+
+      - name: Install Dependencies for polkadot-launch
+        if: steps.cache-node-modules-polkadot-launch.outputs.cache-hit != 'true'
         run: |
-          git clone https://github.com/paritytech/polkadot-launch.git
           cd polkadot-launch
           yarn
+
+      - name: Build polkadot-launch
+        run: |
+          cd polkadot-launch
           yarn build
           chmod +x dist/index.js
           npm link
-
-      - name: Clone Basilisk-node
-        run: |
-          git clone https://github.com/galacticcouncil/Basilisk-node.git
-          cd Basilisk-node
-          mkdir target
-          cd target
-          mkdir release
-          cd release
-          wget https://github.com/galacticcouncil/Basilisk-node/releases/download/v5.0.3/basilisk
-          chmod +x basilisk
-
-      - name: Clone Polkadot-node
-        run: |
-          git clone https://github.com/paritytech/polkadot.git
-          cd polkadot
-          mkdir target
-          cd target
-          mkdir release
-          cd release
-          wget https://github.com/paritytech/polkadot/releases/download/v0.9.12/polkadot
-          chmod +x polkadot
-
-      - name: Clone Basilisk-api
-        run: |
-          git clone -b feature/historical-pool-liquidity https://github.com/galacticcouncil/Basilisk-api.git
-          cd Basilisk-api
-          yarn
-
-      - name: Run testnet
-        shell: bash
-        run: |
-          cd Basilisk-api
-          yarn testnet:start
-
-      - name: Sleep for 20 seconds
-        run: sleep 20s
-        shell: bash
-
-      - uses: actions/setup-node@v2
-        with:
-          node-version: '14'
-
-      - name: Install operating system dependencies for playwright
-        run: npx playwright install-deps
-
-      - uses: actions/checkout@v2
-        with:
-          path: 'ui-app'
-
-      - name: Run tests
-        run: |
-          cd ui-app
-          yarn
-          DEBUG=pw:browser* HEADFUL=true xvfb-run --auto-servernum -- npm test polkadot-dapp.test.ts
-        env:
-          PLAYWRIGHT_TEST_BASE_URL: ${{ github.event.deployment_status.target_url }}
-
-      - name: Upload trace files
-        if: always()
-        uses: actions/upload-artifact@v2
-        with:
-          name: trace_screenshots
-          path: ./ui-app/trace.zip
-
-      - name: Stop testnet
-        if: always()
-        shell: bash
-        run: |
-          pkill polkadot
-          pkill basilisk
-      # cd Basilisk-api
-      # yarn testnet:stop
-
-      - name: Sleep for 10 seconds
-        run: sleep 10
-        shell: bash
+#
+#      - name: Build polkadot-launch
+#        run: |
+#          git clone https://github.com/paritytech/polkadot-launch.git
+#          cd polkadot-launch
+#          yarn
+#          yarn build
+#          chmod +x dist/index.js
+#          npm link
+#
+#
+#      - name: Clone Basilisk-node
+#        run: |
+#          git clone https://github.com/galacticcouncil/Basilisk-node.git
+#          cd Basilisk-node
+#          mkdir target
+#          cd target
+#          mkdir release
+#          cd release
+#          wget https://github.com/galacticcouncil/Basilisk-node/releases/download/v5.0.3/basilisk
+#          chmod +x basilisk
+#
+#      - name: Clone Polkadot-node
+#        run: |
+#          git clone https://github.com/paritytech/polkadot.git
+#          cd polkadot
+#          mkdir target
+#          cd target
+#          mkdir release
+#          cd release
+#          wget https://github.com/paritytech/polkadot/releases/download/v0.9.12/polkadot
+#          chmod +x polkadot
+#
+#      - name: Clone Basilisk-api
+#        run: |
+#          git clone -b feature/historical-pool-liquidity https://github.com/galacticcouncil/Basilisk-api.git
+#          cd Basilisk-api
+#          yarn
+#
+#      - name: Run testnet
+#        shell: bash
+#        run: |
+#          cd Basilisk-api
+#          yarn testnet:start
+#
+#      - name: Sleep for 20 seconds
+#        run: sleep 20s
+#        shell: bash
+#
+#      - uses: actions/setup-node@v2
+#        with:
+#          node-version: '14'
+#
+#      - name: Install operating system dependencies for playwright
+#        run: npx playwright install-deps
+#
+#      - uses: actions/checkout@v2
+#        with:
+#          path: 'ui-app'
+#
+#      - name: Run tests
+#        run: |
+#          cd ui-app
+#          yarn
+#          DEBUG=pw:browser* HEADFUL=true xvfb-run --auto-servernum -- npm test polkadot-dapp.test.ts
+#        env:
+#          PLAYWRIGHT_TEST_BASE_URL: ${{ github.event.deployment_status.target_url }}
+#
+#      - name: Upload trace files
+#        if: always()
+#        uses: actions/upload-artifact@v2
+#        with:
+#          name: trace_screenshots
+#          path: ./ui-app/trace.zip
+#
+#      - name: Stop testnet
+#        if: always()
+#        shell: bash
+#        run: |
+#          pkill polkadot
+#          pkill basilisk
+#      # cd Basilisk-api
+#      # yarn testnet:stop
+#
+#      - name: Sleep for 10 seconds
+#        run: sleep 10
+#        shell: bash
