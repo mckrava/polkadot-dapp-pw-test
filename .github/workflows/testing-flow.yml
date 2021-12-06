@@ -104,21 +104,21 @@ jobs:
 
 # Prepare Basilisk-api
 
-      - name: Clone Basilisk-api
-        run: git clone -b feature/historical-pool-liquidity https://github.com/galacticcouncil/Basilisk-api.git
-
-      - name: Cache Node Modules for Basilisk-api
-        id: cache-node-modules-basilisk-api
-        uses: actions/cache@v2
-        with:
-          path: Basilisk-api/node_modules
-          key: node-modules-basilisk-api-${{ hashFiles('Basilisk-api/yarn.lock') }}
-
-      - name: Install Dependencies for Basilisk-api
-        if: steps.cache-node-modules-basilisk-api.outputs.cache-hit != 'true'
-        run: |
-          cd Basilisk-api
-          yarn
+#      - name: Clone Basilisk-api
+#        run: git clone -b feature/historical-pool-liquidity https://github.com/galacticcouncil/Basilisk-api.git
+#
+#      - name: Cache Node Modules for Basilisk-api
+#        id: cache-node-modules-basilisk-api
+#        uses: actions/cache@v2
+#        with:
+#          path: Basilisk-api/node_modules
+#          key: node-modules-basilisk-api-${{ hashFiles('Basilisk-api/yarn.lock') }}
+#
+#      - name: Install Dependencies for Basilisk-api
+#        if: steps.cache-node-modules-basilisk-api.outputs.cache-hit != 'true'
+#        run: |
+#          cd Basilisk-api
+#          yarn
 
 # Save artifacts
 
@@ -134,15 +134,22 @@ jobs:
           name: polkadot-node-artifacts
           path: ./polkadot
 
-      - name: Save artifacts - Basilisk-api
+      - name: Save artifacts - Polkadot-launch
         uses: actions/upload-artifact@v2
         with:
-          name: basilisk-api-artifacts
-          path: ./Basilisk-api
+          name: polkadot-launch-artifacts
+          path: ./polkadot-launch/dist
+
+#      - name: Save artifacts - Basilisk-api
+#        uses: actions/upload-artifact@v2
+#        with:
+#          name: basilisk-api-artifacts
+#          path: ./Basilisk-api
 
   build_app:
     name: Build UI application
     runs-on: ubuntu-latest
+    needs: set_test_env
     steps:
 
       - name: Prepare folders structure
@@ -153,18 +160,18 @@ jobs:
         with:
           path: 'ui-app'
 
-      - name: Cache Node Modules for ui-app
-        id: cache-node-modules-ui-app
-        uses: actions/cache@v2
-        with:
-          path: ui-app/node_modules
-          key: node-modules-ui-app-${{ hashFiles('ui-app/yarn.lock') }}
-
-      - name: Install Dependencies for ui-app
-        if: steps.cache-node-modules-ui-app.outputs.cache-hit != 'true'
-        run: |
-          cd ui-app
-          yarn
+#      - name: Cache Node Modules for ui-app
+#        id: cache-node-modules-ui-app
+#        uses: actions/cache@v2
+#        with:
+#          path: ui-app/node_modules
+#          key: node-modules-ui-app-${{ hashFiles('ui-app/yarn.lock') }}
+#
+#      - name: Install Dependencies for ui-app
+#        if: steps.cache-node-modules-ui-app.outputs.cache-hit != 'true'
+#        run: |
+#          cd ui-app
+#          yarn
 
       - name: Upload production-ready SB build files
         uses: actions/upload-artifact@v2
@@ -190,11 +197,17 @@ jobs:
           name: polkadot-node-artifacts
           path: ./polkadot
 
-      - name: Download artifact - Basilisk-api
+      - name: Download artifact - Polkadot-launch
         uses: actions/download-artifact@v2
         with:
-          name: basilisk-api-artifacts
-          path: ./Basilisk-api
+          name: polkadot-launch-artifacts
+          path: ./polkadot-launch/dist
+
+#      - name: Download artifact - Basilisk-api
+#        uses: actions/download-artifact@v2
+#        with:
+#          name: basilisk-api-artifacts
+#          path: ./Basilisk-api
 
       - name: Download artifact - UI app
         uses: actions/download-artifact@v2
@@ -202,7 +215,42 @@ jobs:
           name: ui-app-artifacts
           path: ./ui-app
 
+# Prepare Basilisk-api
 
+      - name: Clone Basilisk-api
+        run: git clone -b feature/historical-pool-liquidity https://github.com/galacticcouncil/Basilisk-api.git
+
+      - name: Cache Node Modules for Basilisk-api
+        id: cache-node-modules-basilisk-api
+        uses: actions/cache@v2
+        with:
+          path: Basilisk-api/node_modules
+          key: node-modules-basilisk-api-${{ hashFiles('Basilisk-api/yarn.lock') }}
+
+      - name: Install Dependencies for Basilisk-api
+        if: steps.cache-node-modules-basilisk-api.outputs.cache-hit != 'true'
+        run: |
+          cd Basilisk-api
+          yarn
+
+# Prepare UI-app
+
+      - name: Cache Node Modules for ui-app
+        id: cache-node-modules-ui-app
+        uses: actions/cache@v2
+        with:
+          path: ui-app/node_modules
+          key: node-modules-ui-app-${{ hashFiles('ui-app/yarn.lock') }}
+
+      - name: Install Dependencies for ui-app
+        if: steps.cache-node-modules-ui-app.outputs.cache-hit != 'true'
+        run: |
+          cd ui-app
+          yarn
+
+
+      - name: Configure Rust Env
+        run: curl https://getsubstrate.io -sSf | bash -s -- --fast
 
       - name: Run testnet
         shell: bash
