@@ -301,7 +301,6 @@ jobs:
         shell: bash
         run: |
           killall -q -v polkadot
-#          killall -q -v basilisk
           killall -q -v testing-basilisk
       # cd Basilisk-api
       # yarn testnet:stop
