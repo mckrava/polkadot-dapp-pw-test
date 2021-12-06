@@ -126,7 +126,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: basilisk-node-artifacts
-          path: ./Basilisk-node/target/release
+          path: ./Basilisk-node
 
       - name: Save artifacts - Polkadot-node
         uses: actions/upload-artifact@v2
@@ -149,7 +149,6 @@ jobs:
   build_app:
     name: Build UI application
     runs-on: ubuntu-latest
-    needs: set_test_env
     steps:
 
       - name: Prepare folders structure
@@ -189,7 +188,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: basilisk-node-artifacts
-          path: ./Basilisk-node/target/release
+          path: ./Basilisk-node
 
       - name: Download artifact - Polkadot-node
         uses: actions/download-artifact@v2
@@ -215,10 +214,13 @@ jobs:
           name: ui-app-artifacts
           path: ./ui-app
 
+      - name: Test structure
+        run: ls
+
 # Prepare Basilisk-api
 
       - name: Clone Basilisk-api
-        run: git clone -b feature/historical-pool-liquidity https://github.com/galacticcouncil/Basilisk-api.git
+        run: git clone -b develop https://github.com/galacticcouncil/Basilisk-api.git
 
       - name: Cache Node Modules for Basilisk-api
         id: cache-node-modules-basilisk-api
